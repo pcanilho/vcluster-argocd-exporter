@@ -1,0 +1,13 @@
+defaultPlatforms:
+  - linux/arm64
+  - linux/amd64
+
+builds:
+  - id: server
+    main: .
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w

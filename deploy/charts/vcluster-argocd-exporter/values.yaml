@@ -1,0 +1,22 @@
+---
+# What vClusters to export
+## This is a list of names of vClusters to export (vcluster list)
+clusters: ~
+
+# Internals
+commonAnnotations: ~
+commonLabels: ~
+
+image:
+  repository: ghcr.io/pcanilho/vcluster-argocd-exporter
+  tag: 0.1.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

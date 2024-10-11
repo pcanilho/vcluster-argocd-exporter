@@ -1,0 +1,11 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: check kubeconform
+        name: Kubeconform validation
+        entry: bash -c <<<-'
+          helm template vcluster-argocd-exporter deploy/charts/vcluster-argocd-exporter | kubeconform -strict -output json -summary
+          '
+        language: system
+        pass_filenames: false
