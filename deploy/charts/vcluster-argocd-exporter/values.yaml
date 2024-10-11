@@ -15,7 +15,7 @@ commonLabels: ~
 
 image:
   repository: ghcr.io/pcanilho/vcluster-argocd-exporter
-  tag: 0.1.2
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
