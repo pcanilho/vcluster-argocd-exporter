@@ -25,7 +25,7 @@ spec:
             {{- with .Values.targetNamespace }}
             - -t {{ . }}
             {{- end }}
-            {{- with .Values.clusters }}
+            {{- with (.Values.clusters | default (list .Release.Name)) }}
               {{- range $_, $cluster := . }}
                 {{- if (contains "=" $cluster) }}
                   {{- $parts := split "=" $cluster }}

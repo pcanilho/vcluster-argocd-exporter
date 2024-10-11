@@ -1,6 +1,7 @@
 ---
 # What vClusters to export
 ## This is a list of names of vClusters to export (vcluster list)
+## defaults to .Release.Name
 clusters: ~
 # If set to true, the exporter will auto-discover all vClusters in the cluster.
 # When using this flag, the `clusters` field is ignored.
@@ -14,7 +15,7 @@ commonLabels: ~
 
 image:
   repository: ghcr.io/pcanilho/vcluster-argocd-exporter
-  tag: 0.1.1
+  tag: 0.1.2
   pullPolicy: IfNotPresent
 
 service:
