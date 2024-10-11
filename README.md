@@ -47,7 +47,7 @@ dependencies:
 ### Helm `standalone`
 
 ```bash
-helm upgrade --install ghcr.io/pcanilho/charts/vcluster-argocd-exporter -n <namespace> --create-namespace
+helm upgrade <release_name> --install ghcr.io/pcanilho/charts/vcluster-argocd-exporter -n <namespace> --create-namespace
 ```
 
 ## Configuring
