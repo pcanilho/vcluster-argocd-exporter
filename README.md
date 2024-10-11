@@ -58,6 +58,11 @@ Set the `clusters` list to the names of the vClusters you want to export to Argo
 ```yaml
 # This is a list of names of vClusters to export (vcluster list)
 clusters: ~
+# If set to true, the exporter will auto-discover all vClusters in the cluster.
+# When using this flag, the `clusters` field is ignored.
+autoDiscovery: false
+# The namespace where ArgoCD has been installed
+targetNamespace: argocd
 ```
 The exporter will then create a ArgoCD-ready `v1/Secret` for each vCluster in the list.
 All exported clusters will be automatically detected by ArgoCD and added to the list of available clusters.
