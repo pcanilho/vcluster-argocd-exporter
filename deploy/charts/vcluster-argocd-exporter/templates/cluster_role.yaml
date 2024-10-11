@@ -1,9 +1,7 @@
-# templates/role.yaml
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  namespace: {{ .Release.Namespace }}
   name: {{ include "app.fullname" . }}-role
   labels:
     {{- include "app.commonLabels" . | indent 4 }}
@@ -12,7 +10,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["*"]
-    verbs: ["get", "list", "watch", "create", "update"]
+    verbs: ["*"]
   - apiGroups: ["apps"]
-    resources: ["deployments", "statefulsets"]
-    verbs: ["get", "list", "watch"]
+    resources: ["*"]
+    verbs: ["*"]

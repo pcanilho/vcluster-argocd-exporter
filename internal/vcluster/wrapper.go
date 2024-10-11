@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"log/slog"
 
 	"github.com/pcanilho/vcluster-argocd-exporter/internal/k8s"
 	coreV1 "k8s.io/api/core/v1"
@@ -16,9 +17,13 @@ func ExposeVirtualKubeconfigAsSecret(namespace string, clusters map[string]strin
 	if err != nil {
 		return fmt.Errorf("failed to create Kubernetes controller: %w", err)
 	}
-
+	logger := slog.With(
+		slog.String("namespace", namespace),
+		slog.String("clusters", fmt.Sprintf("%v", clusters)))
+	logger.Info("Kubernetes controller created")
 	clusterKubeConfigs, err := vclusterConnect(clusters)
 	for cluster, targetClusterName := range clusters {
+		logger.Info("Processing...", slog.String("cluster", cluster), slog.String("targetClusterName", targetClusterName))
 		vkc := clusterKubeConfigs[cluster]
 		resource := coreV1.Secret{
 			ObjectMeta: metaV1.ObjectMeta{
@@ -36,6 +41,7 @@ func ExposeVirtualKubeconfigAsSecret(namespace string, clusters map[string]strin
 			},
 		}
 
+		logger.Info("Creating secret...", slog.String("name", resource.Name), slog.String("namespace", resource.Namespace))
 		_, err = k8sCtl.CreateSecret(context.Background(), namespace, &resource, metaV1.CreateOptions{})
 		if err != nil {
 			return fmt.Errorf("failed to create secret: %w", err)

@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -23,7 +24,7 @@ spec:
           args:
             {{ .Values.autoDiscovery | ternary "- --auto-discovery" "" }}
             {{- with .Values.targetNamespace }}
-            - -t {{ . }}
+            - -t{{ . }}
             {{- end }}
             {{- with (.Values.clusters | default (list .Release.Name)) }}
               {{- range $_, $cluster := . }}
