@@ -17,8 +17,8 @@
 </p>
 
 If you are using [vcluster](https://www.vcluster.com/) and [ArgoCD](https://argoproj.github.io/argo-cd/), stop reading and jump to [installing](#installing)!
-Why? You have probably noticed that ArgoCD does not detect vcluster-spawned clusters out-of-the-box requiring painful manual/automated ad-hoc registration.
-I have got you covered. This exporter bridges this gap and allows vCluster clusters to be automatically registered in ArgoCD!
+Why? You have probably noticed that ArgoCD does not detect vcluster-spawned clusters out-of-the-box requiring somewhat painful manual/automated ad-hoc registration.
+I have got you covered. This exporter bridges the gap and allows vCluster clusters to be automatically registered in ArgoCD!
 
 ---
 
@@ -26,8 +26,8 @@ I have got you covered. This exporter bridges this gap and allows vCluster clust
 
 ### Helm `dependency`
 > [!TIP]
-> This is particularly useful when you are installing `vcluster` through Helm as well as you can chain the dependencies.
-> Don't forget to add the ArgoCD specific `PostSync` hook annotation to ensure that the exporter runs **after** the `vcluster` is installed.
+> This is particularly useful when you are already installing `vcluster` through Helm as you can correctly sequence the installation of the exporter.
+> Add the ArgoCD specific `PostSync` hook annotation to ensure that the exporter runs **after** the `vcluster` is installed.
 > e.g. `values.yaml` 
 > ```yaml
 > vcluster-argocd-exporter:
@@ -53,7 +53,6 @@ helm upgrade <release_name> --install ghcr.io/pcanilho/charts/vcluster-argocd-ex
 ## Configuring
 
 ### Values
-Set the `clusters` list to the names of the vClusters you want to export to ArgoCD.
 
 ```yaml
 # This is a list of names of vClusters to export (vcluster list)
@@ -65,5 +64,6 @@ autoDiscovery: false
 # The namespace where ArgoCD has been installed
 targetNamespace: argocd
 ```
-The exporter will then create a ArgoCD-ready `v1/Secret` for each vCluster in the list.
-All exported clusters will be automatically detected by ArgoCD and added to the list of available clusters.
+
+The exporter will create an ArgoCD-ready `v1/Secret` k8s resource for each vCluster found in the provided list or all 
+vClusters if the `autoDiscovery` field is used. ArgoCD will automatically detect these secrets and register the clusters.

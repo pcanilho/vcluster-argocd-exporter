@@ -31,6 +31,7 @@ func ExposeVirtualKubeconfigAsSecret(namespace string, clusters map[string]strin
 				Namespace: namespace,
 				Labels: map[string]string{
 					"argocd.argoproj.io/secret-type": "cluster",
+					"managed-by":                     "vcluster-argocd-exporter",
 				},
 			},
 			Type: "opaque",
