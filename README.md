@@ -2,7 +2,7 @@
 [![Dependabot Updates](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/dependabot/dependabot-updates)
 [![SAST](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/sast.yaml/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/sast.yaml)
 
-![version](https://img.shields.io/badge/Version-v0.1.1-blue)
+![version](https://img.shields.io/badge/Version-v0.1.2-blue)
 <p align="center" width="100%">
     <img src="https://github.com/pcanilho/vcluster-argocd-exporter/blob/main/docs/images/logo.png?raw=true" width="220"></img>
     <br>
@@ -57,7 +57,7 @@ Set the `clusters` list to the names of the vClusters you want to export to Argo
 
 ```yaml
 # This is a list of names of vClusters to export (vcluster list)
-# defaults to .Release.Name
+# defaults to [.Release.Name]
 clusters: ~
 # If set to true, the exporter will auto-discover all vClusters in the cluster.
 # When using this flag, the `clusters` field is ignored.
