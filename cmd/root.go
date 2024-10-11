@@ -17,6 +17,7 @@ func Execute() error {
 }
 
 var (
+	autoDiscover    bool
 	targetNamespace string
 	clusters        []string
 	namedClusters   map[string]string
@@ -26,7 +27,20 @@ var rootCmd = &cobra.Command{
 	Use:     "vcluster-argocd-exporter",
 	Version: version + " (" + commit + ") " + date,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if (namedClusters == nil || len(namedClusters) == 0) && (clusters == nil || len(clusters) == 0) {
+		if autoDiscover {
+			namedClusters = map[string]string{}
+
+			discoveredClusters, err := vcluster.DiscoverClusters()
+			if err != nil {
+				return errors.Wrap(err, "failed to discover clusters")
+			}
+			if len(discoveredClusters) == 0 {
+				return errors.New("no clusters discovered")
+			}
+			clusters = discoveredClusters
+		}
+
+		if len(namedClusters) == 0 && len(clusters) == 0 {
 			return errors.New("no clusters specified")
 		}
 
@@ -34,10 +48,7 @@ var rootCmd = &cobra.Command{
 			return errors.New("no target namespace specified")
 		}
 
-		if clusters != nil && len(clusters) > 0 {
-			if namedClusters == nil {
-				namedClusters = make(map[string]string)
-			}
+		if len(clusters) > 0 {
 			for _, cluster := range clusters {
 				namedClusters[cluster] = cluster
 			}
@@ -50,7 +61,8 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&targetNamespace, "namespace", "n", "argocd", "namespace where ArgoCD is installed")
-	rootCmd.PersistentFlags().StringSliceVarP(&clusters, "clusters", "c", nil, "clusters to export")
-	rootCmd.PersistentFlags().StringToStringVar(&namedClusters, "named-namedClusters", nil, "named clusters to export")
+	rootCmd.PersistentFlags().StringVarP(&targetNamespace, "target-namespace", "t", "argocd", "namespace where ArgoCD is installed")
+	rootCmd.PersistentFlags().StringSliceVarP(&clusters, "clusters", "c", []string{}, "clusters to export")
+	rootCmd.PersistentFlags().StringToStringVar(&namedClusters, "named-cluster", make(map[string]string), "named clusters to export")
+	rootCmd.PersistentFlags().BoolVar(&autoDiscover, "auto-discover", false, "auto discover clusters (overrides all other cluster flags)")
 }

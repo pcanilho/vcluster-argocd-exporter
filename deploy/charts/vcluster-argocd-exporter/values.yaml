@@ -2,6 +2,11 @@
 # What vClusters to export
 ## This is a list of names of vClusters to export (vcluster list)
 clusters: ~
+# If set to true, the exporter will auto-discover all vClusters in the cluster.
+# When using this flag, the `clusters` field is ignored.
+autoDiscovery: false
+# The namespace where ArgoCD has been installed
+targetNamespace: argocd
 
 # Internals
 commonAnnotations: ~
@@ -9,7 +14,7 @@ commonLabels: ~
 
 image:
   repository: ghcr.io/pcanilho/vcluster-argocd-exporter
-  tag: 0.1.0
+  tag: 0.1.1
   pullPolicy: IfNotPresent
 
 service:

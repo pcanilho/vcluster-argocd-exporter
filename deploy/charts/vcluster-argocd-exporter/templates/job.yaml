@@ -21,11 +21,21 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            {{- with .Values.clusters | required "at least one cluster must be provided" }}
-            {{- range $_, $cluster := . }}
+            {{ .Values.autoDiscovery | ternary "- --auto-discovery" "" }}
+            {{- with .Values.targetNamespace }}
+            - -t {{ . }}
+            {{- end }}
+            {{- with .Values.clusters }}
+              {{- range $_, $cluster := . }}
+                {{- if (contains "=" $cluster) }}
+                  {{- $parts := split "=" $cluster }}
+            - --named-cluster
+            - {{$parts._0}}={{$parts._1}}
+                {{- else }}
             - -c
             - {{$cluster}}
-            {{- end }}
+                {{- end }}
+              {{- end }}
             {{- end }}
           ports:
             - containerPort: 8080
