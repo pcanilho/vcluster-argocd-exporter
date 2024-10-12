@@ -5,7 +5,7 @@ permissions:
 
 on:
   pull_request:
-    paths-ignore: &paths-ignore
+    paths-ignore:
       - README.md
       - docs/**
       - .goreleaser.yaml
@@ -20,7 +20,14 @@ on:
     branches-ignore:
       - main
       - release-*
-    paths-ignore: *paths-ignore
+    paths-ignore:
+      - README.md
+      - docs/**
+      - .goreleaser.yaml
+      - .pre-commit-config.yaml
+      - LICENSE
+      - .ko.yaml
+      - .gitignore
 
 env:
   GO_VERSION: '1.22.5'
