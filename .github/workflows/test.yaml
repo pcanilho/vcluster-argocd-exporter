@@ -71,7 +71,8 @@ jobs:
         run: |
           kubectl create namespace argocd
           kubectl get secret -n argocd vcluster-test || echo "Pass..."
-          helm install vcluster https://charts.loft.sh/vcluster \
+          helm repo add loft-sh https://charts.loft.sh && helm repo update
+          helm install vcluster loft-sh/vcluster \
             --set controlPlane.distro.k0s.enabled=true \
             --version 0.21.0-beta.1 \
             --namespace vcluster \
