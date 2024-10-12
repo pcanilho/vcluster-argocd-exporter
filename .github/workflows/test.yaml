@@ -86,5 +86,6 @@ jobs:
             --set clusters={vcluster=vcluster-test} \
             --namespace vcluster \
             --wait
-          sleep 10
+          sleep 30
+          kubectl get secret -n argocd
           kubectl get secret -n argocd vcluster-test || echo "Fail..." && exit 1
