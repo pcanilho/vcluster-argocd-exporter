@@ -20,18 +20,6 @@ on:
     branches:
       - main
       - release-*
-  push:
-    branches-ignore:
-      - main
-      - release-*
-    paths-ignore:
-      - README.md
-      - docs/**
-      - .goreleaser.yaml
-      - .pre-commit-config.yaml
-      - LICENSE
-      - .ko.yaml
-      - .gitignore
 
 env:
   GO_VERSION: '1.22.5'
@@ -82,10 +70,12 @@ jobs:
             --namespace vcluster \
             --create-namespace \
             --wait
+          sleep 60
           helm install vcluster-argocd-exporter deploy/charts/vcluster-argocd-exporter \
             --set clusters={vcluster=vcluster-test} \
             --namespace vcluster \
             --wait
-          sleep 30
+          sleep 60
+          kubectl get sts -n vcluster
           kubectl get secret -n argocd
           kubectl get secret -n argocd vcluster-test || echo "Fail..." && exit 1
