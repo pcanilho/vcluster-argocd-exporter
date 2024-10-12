@@ -2,8 +2,6 @@ name: Test
 
 permissions:
   contents: read
-  packages: read
-  id-token: read
 
 on:
   pull_request:
