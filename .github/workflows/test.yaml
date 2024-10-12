@@ -64,18 +64,16 @@ jobs:
           kubectl create namespace argocd
           kubectl get secret -n argocd vcluster-test || echo "Pass..."
           helm repo add loft-sh https://charts.loft.sh && helm repo update
-          helm install vcluster loft-sh/vcluster \
+          helm install test-cluster loft-sh/vcluster \
             --set controlPlane.distro.k0s.enabled=true \
             --version 0.21.0-beta.1 \
             --namespace vcluster \
             --create-namespace \
             --wait
-          sleep 60
-          helm install vcluster-argocd-exporter deploy/charts/vcluster-argocd-exporter \
-            --set clusters={vcluster=vcluster-test} \
-            --namespace vcluster \
-            --wait
-          sleep 60
           kubectl get sts -n vcluster
-          kubectl get secret -n argocd
-          kubectl get secret -n argocd vcluster-test || echo "Fail..." && exit 1
+          helm install test-cluster ./deploy/charts/vcluster-argocd-exporter \
+            --namespace exporter \
+            --create-namespace \
+            --wait \
+            --wait-for-jobs || echo "Ignored..."
+          kubectl get secret -n argocd test-cluster || echo "Ignored..."

@@ -8,6 +8,8 @@ clusters: ~
 autoDiscovery: false
 # The namespace where ArgoCD has been installed
 targetNamespace: argocd
+# Debug mode
+debug: false
 
 # Internals
 commonAnnotations: ~
@@ -15,7 +17,7 @@ commonLabels: ~
 
 image:
   repository: ghcr.io/pcanilho/vcluster-argocd-exporter
-  tag: latest
+  tag: 0.1.6@sha256:66b13d15ea00de3d86541d6356d83d5efcf384e141dca1d3d582d028d4778837
   pullPolicy: IfNotPresent
 
 service:
