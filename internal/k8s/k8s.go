@@ -116,6 +116,7 @@ func (c *Controller) CreateResource(ctx context.Context, namespace string, resou
 	return res, nil
 }
 
+// CreateSecret creates a secret in the Kubernetes cluster.
 func (c *Controller) CreateSecret(ctx context.Context, namespace string, secret *coreV1.Secret, opts metav1.CreateOptions) (*unstructured.Unstructured, error) {
 	runtimeObject := &unstructured.Unstructured{
 		Object: map[string]any{

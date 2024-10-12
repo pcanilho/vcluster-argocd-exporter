@@ -1,8 +1,9 @@
 [![RELEASE](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/release.yaml/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/release.yaml)
+[![TEST](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/test.yaml/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/test.yaml)
 [![Dependabot Updates](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/dependabot/dependabot-updates)
 [![SAST](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/sast.yaml/badge.svg)](https://github.com/pcanilho/vcluster-argocd-exporter/actions/workflows/sast.yaml)
 
-![version](https://img.shields.io/badge/Version-v0.1.4%20/%20latest-blue)
+![version](https://img.shields.io/badge/Version-v0.1.6%20/%20latest-blue)
 <p align="center" width="100%">
     <img src="https://github.com/pcanilho/vcluster-argocd-exporter/blob/main/docs/images/logo.png?raw=true" width="220"></img>
     <br>

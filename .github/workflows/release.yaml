@@ -6,6 +6,7 @@ on:
 
 jobs:
   release:
+    timeout-minutes: 30
     name: Release
     runs-on: ubuntu-latest
 

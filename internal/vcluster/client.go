@@ -1,3 +1,4 @@
+// Package vcluster client.go provides an interface to interact with the upstream vcluster package.
 package vcluster
 
 import (
@@ -6,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"os"
 
 	logger "github.com/loft-sh/log"
@@ -41,20 +43,20 @@ type virtualKubeconfig struct {
 }
 
 type virtualCluster struct {
-	Name string
+	Name string `json:"name"`
 }
 
 type argoSecretConfig struct {
 	BearerToken     string `json:"bearerToken"`
-	TlsClientConfig struct {
+	TLSClientConfig struct {
 		CaData   string `json:"caData"`
 		Insecure bool   `json:"insecure"`
 	} `json:"tlsClientConfig"`
 }
 
-func vclusterConnect(clusters map[string]string) (map[string]*virtualKubeconfig, error) {
+func vclusterConnect(slogger *slog.Logger, clusters map[string]string) (map[string]*virtualKubeconfig, error) {
 	vkc := make(map[string]*virtualKubeconfig)
-	for cluster, _ := range clusters {
+	for cluster := range clusters {
 		rootCmd := cmd.NewRootCmd(nil)
 		rootCmd.SetContext(context.Background())
 		persistentFlags := rootCmd.PersistentFlags()
@@ -69,7 +71,7 @@ func vclusterConnect(clusters map[string]string) (map[string]*virtualKubeconfig,
 			return nil, fmt.Errorf("failed to execute connect command: %w", err)
 		}
 
-		vkcParsed, err := parseVirtualKubeconfig(vClusterKubeconfig)
+		vkcParsed, err := parseVirtualKubeconfig(slogger, vClusterKubeconfig)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse virtual kubeconfig: %w", err)
 		}
@@ -78,7 +80,7 @@ func vclusterConnect(clusters map[string]string) (map[string]*virtualKubeconfig,
 	return vkc, nil
 }
 
-func vclusterList() ([]string, error) {
+func vclusterList(slogger *slog.Logger) ([]string, error) {
 	var buf bytes.Buffer
 	logger.Default = logger.NewStdoutLogger(os.Stdin, &buf, os.Stderr, logrus.InfoLevel)
 	rootCmd := cmd.NewRootCmd(nil)
@@ -88,11 +90,13 @@ func vclusterList() ([]string, error) {
 	listCmd := cmd.NewListCmd(globalFlags)
 
 	_ = listCmd.Flags().Set("output", "json")
+	slogger.Debug("Executing list command...")
 	if err := listCmd.RunE(rootCmd, []string{}); err != nil {
 		return nil, fmt.Errorf("failed to execute list command: %w", err)
 	}
 
-	vclNames, err := parseVirtualClusterList(buf.Bytes())
+	slogger.Debug("Parsing virtual cluster list...")
+	vclNames, err := parseVirtualClusterList(slogger, buf.Bytes())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse virtual cluster list: %w", err)
 	}
@@ -100,12 +104,14 @@ func vclusterList() ([]string, error) {
 	return vclNames, nil
 }
 
-func parseVirtualKubeconfig(virtualKubeconfigYAML []byte) (*virtualKubeconfig, error) {
+func parseVirtualKubeconfig(slogger *slog.Logger, virtualKubeconfigYAML []byte) (*virtualKubeconfig, error) {
 	var vkc virtualKubeconfigRaw
+	slogger.Debug("Unmarshalling virtual kubeconfig...")
 	if err := yaml.Unmarshal(virtualKubeconfigYAML, &vkc); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal virtual kubeconfig: %w", err)
 	}
 
+	slogger.Debug("Parsing virtual kubeconfig...")
 	return &virtualKubeconfig{
 		Server:                   vkc.Clusters[0].Cluster.Server,
 		CertificateAuthorityData: vkc.Clusters[0].Cluster.CertificateAuthorityData,
@@ -113,17 +119,19 @@ func parseVirtualKubeconfig(virtualKubeconfigYAML []byte) (*virtualKubeconfig, e
 	}, nil
 }
 
-func parseVirtualClusterList(virtualClusterListJSON []byte) ([]string, error) {
+func parseVirtualClusterList(slogger *slog.Logger, virtualClusterListJSON []byte) ([]string, error) {
 	var vcl []virtualCluster
+	slogger.Debug("Unmarshalling virtual cluster list...")
 	if err := json.Unmarshal(virtualClusterListJSON, &vcl); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal virtual cluster list: %w", err)
 	}
 
-	var vclNames []string
+	vclNames := make([]string, 0)
 	for _, vc := range vcl {
 		vclNames = append(vclNames, vc.Name)
 	}
 
+	slogger.Debug("Parsing virtual cluster list...", slog.String("virtualClusters", fmt.Sprintf("%v", vclNames)))
 	return vclNames, nil
 }
 

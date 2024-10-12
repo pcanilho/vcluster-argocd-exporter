@@ -1,3 +1,4 @@
+// Package main represents the entry point of the application.
 package main
 
 import (
@@ -8,6 +9,6 @@ import (
 
 func main() {
 	if err := cmd.Execute(); err != nil {
-		log.Fatalf("failed to export vcluster cluster(s). error: %v", err)
+		log.Fatalf("failed to export cluster(s). error: %v", err)
 	}
 }
