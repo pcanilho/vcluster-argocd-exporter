@@ -78,7 +78,7 @@ jobs:
             --namespace vcluster \
             --create-namespace \
             --wait
-          helm install vcluster deploy/charts/vcluster-argocd-exporter \
+          helm install vcluster-argocd-exporter deploy/charts/vcluster-argocd-exporter \
             --set clusters={vcluster=vcluster-test} \
             --namespace vcluster \
             --wait
