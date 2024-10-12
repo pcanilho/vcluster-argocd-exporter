@@ -17,7 +17,7 @@ commonLabels: ~
 
 image:
   repository: ghcr.io/pcanilho/vcluster-argocd-exporter
-  tag: 0.1.6@sha256:66b13d15ea00de3d86541d6356d83d5efcf384e141dca1d3d582d028d4778837
+  tag: 0.1.7
   pullPolicy: IfNotPresent
 
 service:
