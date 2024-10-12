@@ -73,6 +73,7 @@ jobs:
           kubectl get sts -n vcluster
           helm install test-cluster ./deploy/charts/vcluster-argocd-exporter \
             --namespace exporter \
+            --timeout 1m \
             --create-namespace \
             --wait \
             --wait-for-jobs || echo "Ignored..."
