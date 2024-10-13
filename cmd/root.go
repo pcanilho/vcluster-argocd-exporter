@@ -48,8 +48,9 @@ var rootCmd = &cobra.Command{
 			slog.String("namedClusters", fmt.Sprintf("%v", namedClusters)),
 			slog.Bool("autoDiscover", autoDiscover))
 
+		slogger.Info("Processing...")
 		if autoDiscover {
-			slogger.Info("auto discovering clusters...")
+			slogger.Info("Auto discovering clusters...")
 			namedClusters = map[string]string{}
 
 			discoveredClusters, err := vcluster.DiscoverClusters(slogger)
