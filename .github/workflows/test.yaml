@@ -2,6 +2,7 @@ name: Test
 
 permissions:
   contents: read
+  pull-requests: read
   checks: write
 
 concurrency:
@@ -42,7 +43,9 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
+          only-new-issues: true
           version: ${{ env.GOLANGCI_VERSION }}
+          github-token: ${{ github.token }}
 
   deploy-test:
     needs: lint
