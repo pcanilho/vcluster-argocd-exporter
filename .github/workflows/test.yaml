@@ -23,7 +23,7 @@ on:
       - release-*
 
 env:
-  GO_VERSION: 'latest'
+  GO_VERSION: 'stable'
   GOLANGCI_VERSION: 'v1.60'
 
 jobs:
