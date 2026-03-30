@@ -4,10 +4,10 @@ go 1.25.0
 
 require (
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect
-	github.com/loft-sh/vcluster v0.33.0
+	github.com/loft-sh/vcluster v0.33.1
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.35.0
-	k8s.io/client-go v0.35.0
+	k8s.io/apimachinery v0.35.3
+	k8s.io/client-go v0.35.3
 	sigs.k8s.io/controller-runtime v0.23.0 // indirect
 )
 
@@ -15,8 +15,8 @@ require (
 	github.com/loft-sh/log v0.0.0-20240219160058-26d83ffb46ac
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.4
-	github.com/spf13/cobra v1.10.0
-	k8s.io/api v0.35.0
+	github.com/spf13/cobra v1.10.2
+	k8s.io/api v0.35.3
 )
 
 require (
